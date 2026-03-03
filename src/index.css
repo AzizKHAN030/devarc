@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  --color-devarc-dark: #0C2239;
+  --color-devarc-deep: #153B63;
+  --color-devarc-muted: #64748b;
+  --color-devarc-light: #f1f5f9;
+  --color-devarc-white: #ffffff;
+  --color-devarc-accent: #E76262;
+  --color-devarc-paper: #fafafa;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    @apply snap-y snap-mandatory;
+  }
+  body {
+    @apply bg-devarc-white text-devarc-dark font-sans antialiased;
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+.reveal-text {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
