@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'motion/react';
 import Player from '@vimeo/player';
+import { useTranslation } from 'react-i18next';
 import { 
   Menu, 
   X, 
@@ -19,7 +20,8 @@ import {
   Users,
   CheckCircle2,
   ArrowUpRight,
-  Plus
+  Plus,
+  Globe
 } from 'lucide-react';
 
 // --- Types ---
@@ -46,27 +48,6 @@ const PROJECTS: Project[] = [
   { id: 4, title: 'Crystal Pavilion', category: 'Architecture', image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=1200', year: '2022' },
   { id: 5, title: 'Ethereal Living', category: 'Interior', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=1200', year: '2023' },
   { id: 6, title: 'Serenity Poolside', category: 'Exterior', image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1200', year: '2024' },
-];
-
-const SERVICES: Service[] = [
-  {
-    title: 'Architecture Planning',
-    description: 'Mastering the art of structural integrity and spatial harmony.',
-    icon: <Compass className="w-6 h-6" />,
-    features: ['Site Analysis', 'Conceptual Design', 'Structural Planning']
-  },
-  {
-    title: 'Interior Design',
-    description: 'Curating atmospheres that resonate with human emotion.',
-    icon: <Layout className="w-6 h-6" />,
-    features: ['Space Optimization', 'Material Selection', 'Lighting Design']
-  },
-  {
-    title: 'Exterior Design',
-    description: 'Defining the boundary between nature and architecture.',
-    icon: <Home className="w-6 h-6" />,
-    features: ['Facade Design', 'Landscape Architecture', 'Outdoor Living']
-  }
 ];
 
 const WORK_STEPS = [
@@ -126,15 +107,67 @@ const staggerContainer = {
 
 // --- Components ---
 
+const Preloader = () => {
+  return (
+    <motion.div
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed inset-0 z-[100] bg-devarc-dark flex flex-col items-center justify-center overflow-hidden"
+    >
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 flex flex-col items-center gap-8"
+      >
+        <div className="text-5xl md:text-7xl font-display font-bold tracking-tighter text-white">
+          DEV<span className="text-devarc-accent">ARC</span>
+        </div>
+        
+        <div className="w-48 h-[2px] bg-white/10 relative overflow-hidden rounded-full">
+          <motion.div
+            initial={{ x: "-100%" }}
+            animate={{ x: "100%" }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 1.5, 
+              ease: "easeInOut" 
+            }}
+            className="absolute inset-0 bg-devarc-accent"
+          />
+        </div>
+      </motion.div>
+
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-devarc-deep rounded-full blur-[120px]" />
+      </div>
+    </motion.div>
+  );
+};
+
 const Navbar = () => {
+  const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const navItems = [
+    { name: t('nav.services'), id: 'services' },
+    { name: t('nav.portfolio'), id: 'portfolio' },
+    { name: t('nav.about'), id: 'about' },
+    { name: t('nav.contact'), id: 'contact' }
+  ];
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/80 backdrop-blur-xl py-4 border-b border-devarc-dark/5' : 'bg-transparent py-8'}`}>
@@ -151,25 +184,46 @@ const Navbar = () => {
         </motion.a>
 
         <div className="hidden md:flex items-center gap-12">
-          {['Services', 'Portfolio', 'About', 'Contact'].map((item, i) => (
+          {navItems.map((item, i) => (
             <motion.a 
-              key={item}
+              key={item.id}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              href={`#${item.toLowerCase()}`}
+              href={`#${item.id}`}
               className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-colors relative group ${isScrolled ? 'text-devarc-dark/60' : 'text-white/60'} hover:text-devarc-accent`}
             >
-              {item}
+              {item.name}
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-devarc-accent transition-all duration-300 group-hover:w-full"></span>
             </motion.a>
           ))}
+          
+          {/* Language Switcher */}
+          <div className="flex items-center gap-4 border-l border-devarc-dark/10 pl-8 ml-4">
+            <Globe size={14} className={isScrolled ? 'text-devarc-dark/40' : 'text-white/40'} />
+            <div className="flex gap-3">
+              {['RU', 'EN', 'UZ'].map((lang) => (
+                <button
+                  key={lang}
+                  onClick={() => changeLanguage(lang.toLowerCase())}
+                  className={`text-[10px] font-bold transition-colors ${
+                    i18n.language.toUpperCase() === lang 
+                      ? 'text-devarc-accent' 
+                      : isScrolled ? 'text-devarc-dark/40 hover:text-devarc-dark' : 'text-white/40 hover:text-white'
+                  }`}
+                >
+                  {lang}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className={`px-8 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all duration-500 ${isScrolled ? 'bg-devarc-dark text-white shadow-devarc-dark/10' : 'bg-white text-devarc-dark shadow-white/10'} hover:bg-devarc-accent hover:text-white shadow-xl`}
           >
-            Inquiry
+            {t('nav.inquiry')}
           </motion.button>
         </div>
 
@@ -190,11 +244,25 @@ const Navbar = () => {
             className="bg-white border-b border-devarc-dark/5 md:hidden overflow-hidden"
           >
             <div className="flex flex-col p-8 gap-6">
-              {['Services', 'Portfolio', 'About', 'Contact'].map((item) => (
-                <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-display font-bold text-devarc-dark">
-                  {item}
+              {navItems.map((item) => (
+                <a key={item.id} href={`#${item.id}`} onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-display font-bold text-devarc-dark">
+                  {item.name}
                 </a>
               ))}
+              <div className="flex gap-6 pt-4 border-t border-devarc-dark/5">
+                {['RU', 'EN', 'UZ'].map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => {
+                      changeLanguage(lang.toLowerCase());
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`text-sm font-bold ${i18n.language.toUpperCase() === lang ? 'text-devarc-accent' : 'text-devarc-dark/40'}`}
+                  >
+                    {lang}
+                  </button>
+                ))}
+              </div>
             </div>
           </motion.div>
         )}
@@ -204,6 +272,7 @@ const Navbar = () => {
 };
 
 const Hero = () => {
+  const { t } = useTranslation();
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -215,10 +284,10 @@ const Hero = () => {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   return (
-    <section ref={containerRef} className="relative h-screen flex items-center overflow-hidden snap-start">
+    <section ref={containerRef} className="relative h-screen flex items-center overflow-hidden snap-start bg-black">
       {/* Full Screen Vimeo Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <motion.div style={{ scale }} className="w-full h-full relative">
+      <div className="absolute inset-0 z-0 pointer-events-none bg-black">
+        <motion.div style={{ scale }} className="w-full h-full relative bg-black">
           <iframe 
             src="https://player.vimeo.com/video/1169827783?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&quality=720p" 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.77777778vh] h-[56.25vw]"
@@ -245,7 +314,7 @@ const Hero = () => {
               transition={{ delay: 0.2 }}
               className="inline-block text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6"
             >
-              Est. 2012 — Architecture Studio
+              {t('hero.est')}
             </motion.span>
             <h1 className="text-[12vw] lg:text-[8vw] font-display font-bold text-white leading-[0.85] tracking-tighter mb-8">
               <motion.span 
@@ -254,7 +323,7 @@ const Hero = () => {
                 transition={{ duration: 0.8, delay: 0.3 }}
                 className="block"
               >
-                CRAFTING
+                {t('hero.title1')}
               </motion.span>
               <motion.span 
                 initial={{ y: 100, opacity: 0 }}
@@ -262,7 +331,7 @@ const Hero = () => {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="block text-devarc-accent"
               >
-                SILENCE
+                {t('hero.title2')}
               </motion.span>
               <motion.span 
                 initial={{ y: 100, opacity: 0 }}
@@ -270,7 +339,7 @@ const Hero = () => {
                 transition={{ duration: 0.8, delay: 0.5 }}
                 className="block"
               >
-                IN SPACE
+                {t('hero.title3')}
               </motion.span>
             </h1>
             <motion.p 
@@ -279,7 +348,7 @@ const Hero = () => {
               transition={{ delay: 0.8 }}
               className="text-white/80 text-lg max-w-md leading-relaxed mb-10"
             >
-              We design environments that transcend the ordinary, blending minimalist aesthetics with structural innovation.
+              {t('hero.subtitle')}
             </motion.p>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -288,7 +357,7 @@ const Hero = () => {
               className="flex items-center gap-8"
             >
               <button className="group flex items-center gap-4 text-white font-bold uppercase tracking-widest text-[11px]">
-                Explore Works 
+                {t('hero.explore')} 
                 <span className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-devarc-dark transition-all duration-500">
                   <ArrowRight size={16} />
                 </span>
@@ -303,7 +372,6 @@ const Hero = () => {
         style={{ opacity }}
         className="absolute bottom-12 left-8 flex flex-col gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-white/40"
       >
-        <span>Scroll</span>
         <div className="w-px h-24 bg-white/10 relative overflow-hidden">
           <motion.div 
             animate={{ y: [0, 96] }}
@@ -311,12 +379,36 @@ const Hero = () => {
             className="absolute top-0 left-0 w-full h-1/2 bg-devarc-accent"
           />
         </div>
+        <span>{t('hero.scroll')}</span>
       </motion.div>
     </section>
   );
 };
 
 const Services = () => {
+  const { t } = useTranslation();
+
+  const servicesData: Service[] = [
+    {
+      title: t('services.architecture.title'),
+      description: t('services.architecture.desc'),
+      icon: <Compass className="w-6 h-6" />,
+      features: [t('services.architecture.f1'), t('services.architecture.f2'), t('services.architecture.f3')]
+    },
+    {
+      title: t('services.interior.title'),
+      description: t('services.interior.desc'),
+      icon: <Layout className="w-6 h-6" />,
+      features: [t('services.interior.f1'), t('services.interior.f2'), t('services.interior.f3')]
+    },
+    {
+      title: t('services.exterior.title'),
+      description: t('services.exterior.desc'),
+      icon: <Home className="w-6 h-6" />,
+      features: [t('services.exterior.f1'), t('services.exterior.f2'), t('services.exterior.f3')]
+    }
+  ];
+
   return (
     <section id="services" className="py-32 bg-white snap-start">
       <div className="container mx-auto px-8">
@@ -328,9 +420,9 @@ const Services = () => {
             variants={fadeInUp}
             className="max-w-xl"
           >
-            <h2 className="text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6">Our Expertise</h2>
+            <h2 className="text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6">{t('services.tag')}</h2>
             <h3 className="text-5xl md:text-6xl font-display font-bold text-devarc-dark leading-tight tracking-tighter">
-              Holistic solutions for modern living.
+              {t('services.title')}
             </h3>
           </motion.div>
           <motion.p 
@@ -340,12 +432,12 @@ const Services = () => {
             viewport={{ once: true }}
             className="text-devarc-muted text-lg max-w-sm leading-relaxed lg:mt-12"
           >
-            From the first sketch to the final brick, we ensure every detail aligns with our vision of perfection.
+            {t('services.desc')}
           </motion.p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-px bg-devarc-dark/5 border border-devarc-dark/5 rounded-[2.5rem] overflow-hidden">
-          {SERVICES.map((service, idx) => (
+          {servicesData.map((service, idx) => (
             <motion.div 
               key={service.title}
               initial={{ opacity: 0 }}
@@ -378,6 +470,7 @@ const Services = () => {
 };
 
 const Portfolio = () => {
+  const { t } = useTranslation();
   return (
     <section id="portfolio" className="py-32 bg-devarc-paper snap-start">
       <div className="container mx-auto px-8">
@@ -388,14 +481,14 @@ const Portfolio = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6">Portfolio</h2>
-            <h3 className="text-5xl font-display font-bold text-devarc-dark tracking-tighter">Selected Works</h3>
+            <h2 className="text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6">{t('portfolio.tag')}</h2>
+            <h3 className="text-5xl font-display font-bold text-devarc-dark tracking-tighter">{t('portfolio.title')}</h3>
           </motion.div>
           <motion.button 
             whileHover={{ x: 10 }}
             className="hidden md:flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-devarc-dark"
           >
-            View All Projects <ArrowRight size={16} />
+            {t('portfolio.viewAll')} <ArrowRight size={16} />
           </motion.button>
         </div>
 
@@ -422,7 +515,9 @@ const Portfolio = () => {
               </div>
               <div className="flex justify-between items-start">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-devarc-accent mb-2 block">{project.category}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-devarc-accent mb-2 block">
+                    {t(`portfolio.categories.${project.category.toLowerCase()}`)}
+                  </span>
                   <h4 className="text-2xl font-display font-bold text-devarc-dark group-hover:text-devarc-accent transition-colors">{project.title}</h4>
                 </div>
                 <span className="text-[11px] font-bold text-devarc-muted mt-2">{project.year}</span>
@@ -436,12 +531,25 @@ const Portfolio = () => {
 };
 
 const ArchitectureSteps = () => {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<Player | null>(null);
   const [activeStep, setActiveStep] = useState(0);
-
   const activeStepRef = useRef(0);
+  const isInView = useInView(containerRef, { amount: 0.1 });
+  const isInViewRef = useRef(false);
+
+  useEffect(() => {
+    isInViewRef.current = isInView;
+    if (playerRef.current) {
+      if (isInView) {
+        playerRef.current.play().catch(() => {});
+      } else {
+        playerRef.current.pause().catch(() => {});
+      }
+    }
+  }, [isInView]);
 
   useEffect(() => {
     activeStepRef.current = activeStep;
@@ -456,6 +564,8 @@ const ArchitectureSteps = () => {
         playerRef.current.setLoop(false);
 
         playerRef.current.on('timeupdate', (data) => {
+          if (!isInViewRef.current) return;
+          
           const currentStep = activeStepRef.current;
           if (data.seconds >= WORK_STEPS[currentStep].endTime) {
             if (currentStep < WORK_STEPS.length - 1) {
@@ -479,6 +589,8 @@ const ArchitectureSteps = () => {
 
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (v) => {
+      if (!isInViewRef.current) return;
+      
       const step = Math.min(
         Math.floor(v * WORK_STEPS.length),
         WORK_STEPS.length - 1
@@ -498,8 +610,8 @@ const ArchitectureSteps = () => {
     <section ref={containerRef} className="relative bg-devarc-dark text-white snap-start">
       <div className="flex flex-col lg:flex-row min-h-[500vh]">
         {/* Sticky Video Side */}
-        <div className="lg:w-1/2 h-screen sticky top-0 overflow-hidden order-2 lg:order-1">
-          <div ref={videoRef} className="w-full h-full relative">
+        <div className="lg:w-1/2 h-screen sticky top-0 overflow-hidden order-2 lg:order-1 bg-black">
+          <div ref={videoRef} className="w-full h-full relative bg-black">
             <iframe 
               src="https://player.vimeo.com/video/1169842314?background=1&autoplay=1&loop=0&byline=0&title=0&muted=1" 
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.77vh] h-[56.25vw]"
@@ -523,13 +635,13 @@ const ArchitectureSteps = () => {
                 className="max-w-md"
               >
                 <span className="text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">
-                  Phase 0{index + 1}
+                  {t('steps.phase')} 0{index + 1}
                 </span>
                 <h3 className="text-4xl lg:text-6xl font-display font-bold mb-8 leading-tight tracking-tighter">
-                  {step.title}
+                  {t(`steps.step${index + 1}.title`)}
                 </h3>
                 <p className="text-white/60 text-lg leading-relaxed">
-                  {step.description}
+                  {t(`steps.step${index + 1}.desc`)}
                 </p>
               </motion.div>
             </div>
@@ -541,6 +653,7 @@ const ArchitectureSteps = () => {
 };
 
 const About = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -570,7 +683,7 @@ const About = () => {
             >
               <div className="text-devarc-accent text-5xl font-display font-bold mb-2">12Y</div>
               <div className="text-white/60 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
-                Defining the future of architectural excellence since 2012.
+                {t('about.years')}
               </div>
             </motion.div>
           </div>
@@ -581,19 +694,19 @@ const About = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6">Our Philosophy</h2>
+            <h2 className="text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6">{t('about.tag')}</h2>
             <h3 className="text-5xl font-display font-bold text-devarc-dark mb-8 leading-tight tracking-tighter">
-              We don't just build structures; we create experiences.
+              {t('about.title')}
             </h3>
             <p className="text-devarc-muted text-lg mb-12 leading-relaxed">
-              At DEVARC, we believe that architecture is the silent language of space. Our approach is rooted in the pursuit of essentialism—stripping away the noise to reveal the soul of a project.
+              {t('about.desc')}
             </p>
             
             <div className="space-y-8">
               {[
-                { label: 'Innovation', desc: 'Pushing boundaries with sustainable tech.' },
-                { label: 'Precision', desc: 'Meticulous attention to every millimeter.' },
-                { label: 'Harmony', desc: 'Seamless integration with the environment.' }
+                { label: t('about.innovation.label'), desc: t('about.innovation.desc') },
+                { label: t('about.precision.label'), desc: t('about.precision.desc') },
+                { label: t('about.harmony.label'), desc: t('about.harmony.desc') }
               ].map((item, i) => (
                 <motion.div 
                   key={item.label}
@@ -621,6 +734,7 @@ const About = () => {
 };
 
 const Contact = () => {
+  const { t } = useTranslation();
   return (
     <section id="contact" className="py-32 bg-white snap-start">
       <div className="container mx-auto px-8">
@@ -634,9 +748,9 @@ const Contact = () => {
 
           <div className="grid lg:grid-cols-2 gap-24 relative z-10">
             <div>
-              <h2 className="text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-8">Contact</h2>
+              <h2 className="text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-8">{t('contact.tag')}</h2>
               <h3 className="text-5xl lg:text-7xl font-display font-bold text-white mb-12 leading-[0.9] tracking-tighter">
-                Ready to start your <span className="text-devarc-accent">journey?</span>
+                {t('contact.title')} <span className="text-devarc-accent">{t('contact.titleAccent')}</span>
               </h3>
               <div className="space-y-8">
                 <div className="flex items-center gap-6">
@@ -644,7 +758,7 @@ const Contact = () => {
                     <Mail size={24} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1">Email</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1">{t('contact.email')}</p>
                     <p className="text-xl font-display font-bold text-white">hello@devarc.com</p>
                   </div>
                 </div>
@@ -653,7 +767,7 @@ const Contact = () => {
                     <Phone size={24} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1">Phone</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1">{t('contact.phone')}</p>
                     <p className="text-xl font-display font-bold text-white">+1 (555) 000-1234</p>
                   </div>
                 </div>
@@ -664,16 +778,16 @@ const Contact = () => {
               <form className="space-y-8">
                 <div className="grid sm:grid-cols-2 gap-8">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/40">Name</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/40">{t('contact.form.name')}</label>
                     <input type="text" className="w-full bg-transparent border-b border-white/10 py-4 focus:outline-none focus:border-devarc-accent transition-colors text-white" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/40">Email</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/40">{t('contact.form.email')}</label>
                     <input type="email" className="w-full bg-transparent border-b border-white/10 py-4 focus:outline-none focus:border-devarc-accent transition-colors text-white" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-white/40">Message</label>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-white/40">{t('contact.form.message')}</label>
                   <textarea rows={4} className="w-full bg-transparent border-b border-white/10 py-4 focus:outline-none focus:border-devarc-accent transition-colors text-white resize-none" />
                 </div>
                 <motion.button 
@@ -681,7 +795,7 @@ const Contact = () => {
                   whileTap={{ scale: 0.98 }}
                   className="w-full bg-devarc-accent text-white py-6 rounded-2xl font-bold uppercase tracking-widest text-[11px] hover:bg-white hover:text-devarc-dark transition-all duration-500"
                 >
-                  Send Inquiry
+                  {t('contact.form.submit')}
                 </motion.button>
               </form>
             </div>
@@ -693,6 +807,7 @@ const Contact = () => {
 };
 
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <footer className="bg-white py-20 border-t border-devarc-dark/5 snap-start">
       <div className="container mx-auto px-8">
@@ -710,7 +825,7 @@ const Footer = () => {
           </div>
 
           <div className="text-[11px] font-bold uppercase tracking-widest text-devarc-dark/40">
-            © 2024 DEVARC Studio
+            {t('footer.rights')}
           </div>
         </div>
       </div>
@@ -719,8 +834,21 @@ const Footer = () => {
 };
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate preloading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="min-h-screen selection:bg-devarc-accent selection:text-white">
+    <div className="min-h-screen selection:bg-devarc-accent selection:text-white relative">
+      <AnimatePresence mode="wait">
+        {isLoading && <Preloader key="loader" />}
+      </AnimatePresence>
       <Navbar />
       <Hero />
       <Services />

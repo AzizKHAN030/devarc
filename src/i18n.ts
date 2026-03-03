@@ -1,0 +1,357 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+
+const resources = {
+  ru: {
+    translation: {
+      nav: {
+        services: 'Услуги',
+        portfolio: 'Портфолио',
+        about: 'О нас',
+        contact: 'Контакты',
+        inquiry: 'Запрос'
+      },
+      hero: {
+        est: 'Осн. 2012 — Архитектурная студия',
+        title1: 'СОЗДАВАЯ',
+        title2: 'ТИШИНУ',
+        title3: 'В ПРОСТРАНСТВЕ',
+        subtitle: 'Мы проектируем среду, которая выходит за рамки обыденного, сочетая минималистскую эстетику со структурными инновациями.',
+        explore: 'Исследовать работы',
+        scroll: 'Листайте'
+      },
+      services: {
+        tag: 'Наша экспертиза',
+        title: 'Целостные решения для современной жизни.',
+        desc: 'От первого эскиза до последнего кирпича мы гарантируем, что каждая деталь соответствует нашему видению совершенства.',
+        architecture: {
+          title: 'Архитектурное планирование',
+          desc: 'Освоение искусства структурной целостности и пространственной гармонии.',
+          f1: 'Анализ участка',
+          f2: 'Концептуальный дизайн',
+          f3: 'Структурное планирование'
+        },
+        interior: {
+          title: 'Дизайн интерьера',
+          desc: 'Создание атмосферы, резонирующей с человеческими эмоциями.',
+          f1: 'Оптимизация пространства',
+          f2: 'Подбор материалов',
+          f3: 'Дизайн освещения'
+        },
+        exterior: {
+          title: 'Экстерьерный дизайн',
+          desc: 'Определение границы между природой и архитектурой.',
+          f1: 'Дизайн фасада',
+          f2: 'Ландшафтная архитектура',
+          f3: 'Жизнь на открытом воздухе'
+        }
+      },
+      portfolio: {
+        tag: 'Портфолио',
+        title: 'Избранные работы',
+        viewAll: 'Посмотреть все проекты',
+        categories: {
+          architecture: 'Архитектура',
+          interior: 'Интерьер',
+          exterior: 'Экстерьер'
+        }
+      },
+      steps: {
+        phase: 'Фаза',
+        step1: {
+          title: 'Земляные работы и выемка грунта',
+          desc: 'Путешествие начинается с точного анализа участка и тяжелых земляных работ. Мы подготавливаем землю, чтобы выдержать вес инноваций, обеспечивая стабильный фундамент для будущей структуры.'
+        },
+        step2: {
+          title: 'Фундамент и вертикальная структура',
+          desc: 'Железобетонные фундаменты и вертикальные колонны образуют скелет здания. Эта фаза фокусируется на структурной целостности и первом видимом подъеме архитектурной формы.'
+        },
+        step3: {
+          title: 'Структурный каркас',
+          desc: 'По мере формирования этажей становится очевидной сложность дизайна. Мы используем передовые инженерные методы для создания широких пролетов и уникальных геометрических объемов.'
+        },
+        step4: {
+          title: 'Ограждение и фасад',
+          desc: 'Здание герметизируется высокоэффективным остеклением и внешними оболочками. Здесь эстетическое видение встречается с техническими характеристиками, защищая интерьер и определяя характер.'
+        },
+        step5: {
+          title: 'Финальная отделка',
+          desc: 'Заключительный этап включает тщательную детализацию интерьера, ландшафтную интеграцию и архитектурное освещение. Мы превращаем структуру в живую, дышащую среду роскоши.'
+        }
+      },
+      about: {
+        tag: 'Наша философия',
+        title: 'Мы не просто строим здания; мы создаем впечатления.',
+        desc: 'В DEVARC мы верим, что архитектура — это безмолвный язык пространства. Наш подход основан на стремлении к эссенциализму — отсечении шума, чтобы раскрыть душу проекта.',
+        innovation: {
+          label: 'Инновации',
+          desc: 'Раздвигаем границы с помощью экологичных технологий.'
+        },
+        precision: {
+          label: 'Точность',
+          desc: 'Тщательное внимание к каждому миллиметру.'
+        },
+        harmony: {
+          label: 'Гармония',
+          desc: 'Бесшовная интеграция с окружающей средой.'
+        },
+        years: 'Определяем будущее архитектурного совершенства с 2012 года.'
+      },
+      contact: {
+        tag: 'Контакты',
+        title: 'Готовы начать свое',
+        titleAccent: 'путешествие?',
+        email: 'Электронная почта',
+        phone: 'Телефон',
+        form: {
+          name: 'Имя',
+          email: 'Email',
+          message: 'Сообщение',
+          submit: 'Отправить запрос'
+        }
+      },
+      footer: {
+        rights: '© 2024 Студия DEVARC'
+      }
+    }
+  },
+  en: {
+    translation: {
+      nav: {
+        services: 'Services',
+        portfolio: 'Portfolio',
+        about: 'About',
+        contact: 'Contact',
+        inquiry: 'Inquiry'
+      },
+      hero: {
+        est: 'Est. 2012 — Architecture Studio',
+        title1: 'CRAFTING',
+        title2: 'SILENCE',
+        title3: 'IN SPACE',
+        subtitle: 'We design environments that transcend the ordinary, blending minimalist aesthetics with structural innovation.',
+        explore: 'Explore Works',
+        scroll: 'Scroll'
+      },
+      services: {
+        tag: 'Our Expertise',
+        title: 'Holistic solutions for modern living.',
+        desc: 'From the first sketch to the final brick, we ensure every detail aligns with our vision of perfection.',
+        architecture: {
+          title: 'Architecture Planning',
+          desc: 'Mastering the art of structural integrity and spatial harmony.',
+          f1: 'Site Analysis',
+          f2: 'Conceptual Design',
+          f3: 'Structural Planning'
+        },
+        interior: {
+          title: 'Interior Design',
+          desc: 'Curating atmospheres that resonate with human emotion.',
+          f1: 'Space Optimization',
+          f2: 'Material Selection',
+          f3: 'Lighting Design'
+        },
+        exterior: {
+          title: 'Exterior Design',
+          desc: 'Defining the boundary between nature and architecture.',
+          f1: 'Facade Design',
+          f2: 'Landscape Architecture',
+          f3: 'Outdoor Living'
+        }
+      },
+      portfolio: {
+        tag: 'Portfolio',
+        title: 'Selected Works',
+        viewAll: 'View All Projects',
+        categories: {
+          architecture: 'Architecture',
+          interior: 'Interior',
+          exterior: 'Exterior'
+        }
+      },
+      steps: {
+        phase: 'Phase',
+        step1: {
+          title: 'Groundwork & Excavation',
+          desc: 'The journey begins with precision site analysis and heavy-duty excavation. We prepare the earth to support the weight of innovation, ensuring a stable foundation for the structure to come.'
+        },
+        step2: {
+          title: 'Foundation & Vertical Structure',
+          desc: 'Reinforced concrete footings and vertical columns form the skeleton of the building. This phase focuses on structural integrity and the first visible rise of the architectural form.'
+        },
+        step3: {
+          title: 'Structural Framing',
+          desc: 'As the floors take shape, the complexity of the design becomes apparent. We use advanced engineering techniques to create expansive spans and unique geometric volumes.'
+        },
+        step4: {
+          title: 'Enclosure & Facade',
+          desc: 'The building is sealed with high-performance glazing and exterior shells. This is where the aesthetic vision meets technical performance, protecting the interior while defining the character.'
+        },
+        step5: {
+          title: 'Final Finishing',
+          desc: 'The final touch involves meticulous interior detailing, landscape integration, and architectural lighting. We transform a structure into a living, breathing environment of luxury.'
+        }
+      },
+      about: {
+        tag: 'Our Philosophy',
+        title: "We don't just build structures; we create experiences.",
+        desc: 'At DEVARC, we believe that architecture is the silent language of space. Our approach is rooted in the pursuit of essentialism—stripping away the noise to reveal the soul of a project.',
+        innovation: {
+          label: 'Innovation',
+          desc: 'Pushing boundaries with sustainable tech.'
+        },
+        precision: {
+          label: 'Precision',
+          desc: 'Meticulous attention to every millimeter.'
+        },
+        harmony: {
+          label: 'Harmony',
+          desc: 'Seamless integration with the environment.'
+        },
+        years: 'Defining the future of architectural excellence since 2012.'
+      },
+      contact: {
+        tag: 'Contact',
+        title: 'Ready to start your',
+        titleAccent: 'journey?',
+        email: 'Email',
+        phone: 'Phone',
+        form: {
+          name: 'Name',
+          email: 'Email',
+          message: 'Message',
+          submit: 'Send Inquiry'
+        }
+      },
+      footer: {
+        rights: '© 2024 DEVARC Studio'
+      }
+    }
+  },
+  uz: {
+    translation: {
+      nav: {
+        services: 'Xizmatlar',
+        portfolio: 'Portfolio',
+        about: 'Biz haqimizda',
+        contact: 'Aloqa',
+        inquiry: 'Soʻrov'
+      },
+      hero: {
+        est: 'Asos. 2012 — Arxitektura studiyasi',
+        title1: 'FAZODA',
+        title2: 'SUKUNAT',
+        title3: 'YARATIB',
+        subtitle: 'Biz minimalist estetika va tarkibiy innovatsiyalarni birlashtirgan holda, odatdagidan tashqari muhitlarni loyihalashtiramiz.',
+        explore: 'Ishlarni koʻrish',
+        scroll: 'Varaqlang'
+      },
+      services: {
+        tag: 'Bizning tajribamiz',
+        title: 'Zamonaviy hayot uchun yaxlit yechimlar.',
+        desc: 'Birinchi eskizdan tortib oxirgi gʻishtgacha, har bir detal bizning mukammallik haqidagi tasavvurimizga mos kelishini taʼminlaymiz.',
+        architecture: {
+          title: 'Arxitektura rejalashtirish',
+          desc: 'Struktura yaxlitligi va fazoviy uygʻunlik sanʼatini egallash.',
+          f1: 'Uchastka tahlili',
+          f2: 'Kontseptual dizayn',
+          f3: 'Struktura rejalashtirish'
+        },
+        interior: {
+          title: 'Interyer dizayni',
+          desc: 'Inson tuygʻulari bilan hamohang muhit yaratish.',
+          f1: 'Fazoni optimallashtirish',
+          f2: 'Materiallar tanlovi',
+          f3: 'Yoritish dizayni'
+        },
+        exterior: {
+          title: 'Eksteryer dizayni',
+          desc: 'Tabiat va arxitektura oʻrtasidagi chegarani belgilash.',
+          f1: 'Fasad dizayni',
+          f2: 'Landshaft arxitekturasi',
+          f3: 'Ochiq havoda hayot'
+        }
+      },
+      portfolio: {
+        tag: 'Portfolio',
+        title: 'Tanlangan ishlar',
+        viewAll: 'Barcha loyihalarni koʻrish',
+        categories: {
+          architecture: 'Arxitektura',
+          interior: 'Interyer',
+          exterior: 'Eksteryer'
+        }
+      },
+      steps: {
+        phase: 'Bosqich',
+        step1: {
+          title: 'Yer ishlari va qazish',
+          desc: 'Sayohat uchastkani aniq tahlil qilish va ogʻir yer ishlari bilan boshlanadi. Biz innovatsiyalar ogʻirligini koʻtarish uchun yerni tayyorlaymiz va kelajakdagi struktura uchun barqaror poydevorni taʼminlaymiz.'
+        },
+        step2: {
+          title: 'Poydevor va vertikal struktura',
+          desc: 'Temir-beton poydevorlar va vertikal ustunlar binoning skeletini hosil qiladi. Ushbu bosqich struktura yaxlitligiga va arxitektura shaklining birinchi koʻrinadigan koʻtarilishiga qaratilgan.'
+        },
+        step3: {
+          title: 'Struktura karkasi',
+          desc: 'Qavatlar shakllangani sayin dizaynning murakkabligi ayon boʻladi. Biz keng oraliqlar va noyob geometrik hajmlarni yaratish uchun ilgʻor muhandislik usullaridan foydalanamiz.'
+        },
+        step4: {
+          title: 'Toʻsiq va fasad',
+          desc: 'Bino yuqori samarali oynalar va tashqi qobiqlar bilan yopiladi. Bu yerda estetik qarash texnik xususiyatlar bilan uchrashadi, interyerni himoya qiladi va xarakterni belgilaydi.'
+        },
+        step5: {
+          title: 'Yakuniy pardozlash',
+          desc: 'Yakuniy bosqich interyerni sinchkovlik bilan detallash, landshaft integratsiyasi va arxitektura yoritishni oʻz ichiga oladi. Biz strukturani hashamatli, jonli muhitga aylantiramiz.'
+        }
+      },
+      about: {
+        tag: 'Bizning falsafamiz',
+        title: 'Biz shunchaki binolar qurmaymiz; biz taassurotlar yaratamiz.',
+        desc: 'DEVARCʼda biz arxitektura fazoning sokin tili ekanligiga ishonamiz. Bizning yondashuvimiz essentsializmga intilishga asoslangan — loyihaning ruhini ochish uchun shovqinni olib tashlash.',
+        innovation: {
+          label: 'Innovatsiya',
+          desc: 'Barqaror texnologiyalar bilan chegaralarni kengaytirish.'
+        },
+        precision: {
+          label: 'Aniqlik',
+          desc: 'Har bir millimetrga sinchkovlik bilan eʼtibor.'
+        },
+        harmony: {
+          label: 'Uygʻunlik',
+          desc: 'Atrof-muhit bilan uzviy integratsiya.'
+        },
+        years: '2012-yildan beri arxitektura mukammalligi kelajagini belgilab kelmoqdamiz.'
+      },
+      contact: {
+        tag: 'Aloqa',
+        title: 'Sayohatni boshlashga',
+        titleAccent: 'tayyormisiz?',
+        email: 'Elektron pochta',
+        phone: 'Telefon',
+        form: {
+          name: 'Ism',
+          email: 'Email',
+          message: 'Xabar',
+          submit: 'Soʻrov yuborish'
+        }
+      },
+      footer: {
+        rights: '© 2024 DEVARC studiyasi'
+      }
+    }
+  }
+};
+
+i18n
+  .use(initReactI18next)
+  .init({
+    resources,
+    lng: 'ru', // Russian by default
+    fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false
+    }
+  });
+
+export default i18n;
