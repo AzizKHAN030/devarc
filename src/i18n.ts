@@ -79,6 +79,21 @@ const resources = {
           desc: 'Заключительный этап включает тщательную детализацию интерьера, ландшафтную интеграцию и архитектурное освещение. Мы превращаем структуру в живую, дышащую среду роскоши.'
         }
       },
+      interiorSteps: {
+        phase: 'Фаза',
+        step1: {
+          title: 'Концептуализация пространства',
+          desc: 'Мы начинаем с глубокого понимания вашего образа жизни, создавая планировочные решения, которые максимизируют потенциал каждого квадратного метра.'
+        },
+        step2: {
+          title: 'Материализация и текстуры',
+          desc: 'Подбор тактильных материалов и палитр, которые создают уникальную атмосферу. Мы соединяем натуральный камень, дерево и металл в единую симфонию.'
+        },
+        step3: {
+          title: 'Детализация и освещение',
+          desc: 'Финальный штрих — интеграция умного освещения и авторских элементов декора, которые превращают интерьер в произведение искусства.'
+        }
+      },
       about: {
         tag: 'Наша философия',
         title: 'Мы не просто строим здания; мы создаем впечатления.',
@@ -192,6 +207,21 @@ const resources = {
           desc: 'The final touch involves meticulous interior detailing, landscape integration, and architectural lighting. We transform a structure into a living, breathing environment of luxury.'
         }
       },
+      interiorSteps: {
+        phase: 'Phase',
+        step1: {
+          title: 'Space Conceptualization',
+          desc: 'We begin with a deep understanding of your lifestyle, creating layout solutions that maximize the potential of every square meter.'
+        },
+        step2: {
+          title: 'Materialization & Textures',
+          desc: 'Selection of tactile materials and palettes that create a unique atmosphere. We combine natural stone, wood, and metal into a single symphony.'
+        },
+        step3: {
+          title: 'Detailing & Lighting',
+          desc: 'The final touch is the integration of smart lighting and custom decor elements that turn the interior into a work of art.'
+        }
+      },
       about: {
         tag: 'Our Philosophy',
         title: "We don't just build structures; we create experiences.",
@@ -303,6 +333,21 @@ const resources = {
         step5: {
           title: 'Yakuniy pardozlash',
           desc: 'Yakuniy bosqich interyerni sinchkovlik bilan detallash, landshaft integratsiyasi va arxitektura yoritishni oʻz ichiga oladi. Biz strukturani hashamatli, jonli muhitga aylantiramiz.'
+        }
+      },
+      interiorSteps: {
+        phase: 'Bosqich',
+        step1: {
+          title: 'Fazo kontseptualizatsiyasi',
+          desc: 'Biz sizning turmush tarzingizni chuqur tushunishdan boshlaymiz, har bir kvadrat metrning potentsialini maksimal darajada oshiradigan rejalashtirish yechimlarini yaratamiz.'
+        },
+        step2: {
+          title: 'Materializatsiya va teksturalar',
+          desc: 'Noyob muhit yaratadigan taktil materiallar va palitralarni tanlash. Biz tabiiy tosh, yogʻoch va metallni yagona simfoniyaga birlashtiramiz.'
+        },
+        step3: {
+          title: 'Detallashtirish va yoritish',
+          desc: 'Yakuniy shtrix — aqlli yoritish va mualliflik dekor elementlarining integratsiyasi boʻlib, ular interyerni sanʼat asariga aylantiradi.'
         }
       },
       about: {
