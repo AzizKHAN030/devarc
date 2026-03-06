@@ -340,7 +340,7 @@ const Hero = () => {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center overflow-hidden bg-black">
+    <section ref={containerRef} className="relative min-h-screen flex items-center overflow-hidden snap-start bg-black">
       {/* Full Screen Vimeo Background */}
       <div className="absolute inset-0 z-0 pointer-events-none bg-black">
         <motion.div style={{ scale }} className="w-full h-full relative bg-black">
@@ -468,7 +468,7 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-20 sm:py-32 bg-white">
+    <section id="services" className="py-20 sm:py-32 bg-white snap-start">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-8 sm:gap-12 mb-16 sm:mb-24">
           <motion.div 
@@ -530,7 +530,7 @@ const Services = () => {
 const Portfolio = () => {
   const { t } = useTranslation();
   return (
-    <section id="portfolio" className="py-20 sm:py-32 bg-devarc-paper">
+    <section id="portfolio" className="py-20 sm:py-32 bg-devarc-paper snap-start">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 sm:mb-20 gap-6">
           <motion.div 
@@ -875,7 +875,7 @@ const About = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="about" className="py-20 sm:py-32 bg-white overflow-hidden">
+    <section id="about" className="py-20 sm:py-32 bg-white overflow-hidden snap-start">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div ref={ref} className="relative">
@@ -953,7 +953,7 @@ const About = () => {
 const Contact = () => {
   const { t } = useTranslation();
   return (
-    <section id="contact" className="py-20 sm:py-32 bg-white">
+    <section id="contact" className="py-20 sm:py-32 bg-white snap-start">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="bg-devarc-dark rounded-3xl sm:rounded-[4rem] p-8 sm:p-12 lg:p-24 relative overflow-hidden">
           {/* Background Pattern */}
@@ -1026,7 +1026,7 @@ const Contact = () => {
 const Footer = () => {
   const { t } = useTranslation();
   return (
-    <footer className="bg-white py-12 sm:py-20 border-t border-devarc-dark/5">
+    <footer className="bg-white py-12 sm:py-20 border-t border-devarc-dark/5 snap-start">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 sm:gap-12">
           <div className="text-2xl sm:text-3xl font-display font-bold tracking-tighter text-devarc-dark">
