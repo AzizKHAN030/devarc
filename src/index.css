@@ -16,8 +16,20 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+  }
+  
+  /* On mobile, only snap when explicitly requested by a section */
+  html.is-in-slider {
     scroll-snap-type: y proximity;
   }
+
+  /* On desktop, always enable snapping for a more structured feel */
+  @media (min-width: 1024px) {
+    html {
+      scroll-snap-type: y mandatory;
+    }
+  }
+  
   body {
     @apply bg-devarc-white text-devarc-dark font-sans antialiased;
   }
