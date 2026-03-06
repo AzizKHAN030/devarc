@@ -1176,7 +1176,8 @@ export default function App() {
   const isIntInView = useInView(intRef, { margin: "-10% 0px -10% 0px" });
 
   useEffect(() => {
-    if (isArchInView || isIntInView) {
+    const isDesktop = window.innerWidth >= 1024;
+    if (isDesktop && (isArchInView || isIntInView)) {
       document.documentElement.classList.add('snap-mandatory-active');
     } else {
       document.documentElement.classList.remove('snap-mandatory-active');
