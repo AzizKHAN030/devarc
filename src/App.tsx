@@ -7,6 +7,7 @@ import {
   X, 
   ArrowRight, 
   ChevronRight, 
+  ChevronLeft,
   Home, 
   Layout, 
   Compass, 
@@ -591,6 +592,7 @@ const Portfolio = () => {
 const ArchitectureSteps = () => {
   const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<Player | null>(null);
   const [activeStep, setActiveStep] = useState(0);
@@ -598,6 +600,14 @@ const ArchitectureSteps = () => {
   const isInView = useInView(containerRef, { amount: 0.1 });
   const isInViewRef = useRef(false);
   const playPromiseRef = useRef<Promise<void> | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     isInViewRef.current = isInView;
@@ -646,29 +656,42 @@ const ArchitectureSteps = () => {
           if (data.seconds >= WORK_STEPS[currentStep].endTime) {
             if (currentStep < WORK_STEPS.length - 1) {
               const nextStep = currentStep + 1;
-              const container = containerRef.current;
-              if (container) {
-                const scrollPos = container.offsetTop + (nextStep * window.innerHeight);
-                window.scrollTo({ top: scrollPos, behavior: 'smooth' });
+              if (isMobile) {
+                const container = scrollContainerRef.current;
+                if (container) {
+                  container.scrollTo({ left: nextStep * window.innerWidth, behavior: 'smooth' });
+                }
+              } else {
+                const container = containerRef.current;
+                if (container) {
+                  const scrollPos = container.offsetTop + (nextStep * window.innerHeight);
+                  window.scrollTo({ top: scrollPos, behavior: 'smooth' });
+                }
               }
             }
           }
         });
       }
     }
-  }, []);
+  }, [isMobile]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
+  const { scrollXProgress } = useScroll({
+    container: scrollContainerRef,
+    axis: "x"
+  });
+
   useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (v) => {
+    const progress = isMobile ? scrollXProgress : scrollYProgress;
+    const unsubscribe = progress.on("change", (v) => {
       if (!isInViewRef.current) return;
       
       const step = Math.min(
-        Math.floor(v * WORK_STEPS.length),
+        Math.floor(v * WORK_STEPS.length + 0.1),
         WORK_STEPS.length - 1
       );
       if (step !== activeStep) {
@@ -681,11 +704,26 @@ const ArchitectureSteps = () => {
       }
     });
     return () => unsubscribe();
-  }, [scrollYProgress, activeStep]);
+  }, [scrollYProgress, scrollXProgress, activeStep, isMobile]);
+
+  const scrollToStep = (index: number) => {
+    if (isMobile) {
+      const container = scrollContainerRef.current;
+      if (container) {
+        container.scrollTo({ left: index * window.innerWidth, behavior: 'smooth' });
+      }
+    } else {
+      const container = containerRef.current;
+      if (container) {
+        const scrollPos = container.offsetTop + (index * window.innerHeight);
+        window.scrollTo({ top: scrollPos, behavior: 'smooth' });
+      }
+    }
+  };
 
   return (
     <section ref={containerRef} className="relative bg-devarc-dark text-white">
-      <div className="flex flex-col lg:flex-row min-h-[500vh]">
+      <div className="flex flex-col lg:flex-row min-h-screen lg:min-h-[500vh]">
         {/* Sticky Video Side */}
         <div className="lg:w-1/2 h-[40vh] lg:h-[calc(100vh-5rem)] sticky top-[60px] lg:top-20 overflow-hidden order-1 lg:order-1 bg-black z-20">
           <div ref={videoRef} className="w-full h-full relative bg-black">
@@ -701,9 +739,12 @@ const ArchitectureSteps = () => {
         </div>
 
         {/* Scrollable Content Side */}
-        <div className="lg:w-1/2 order-2 lg:order-2">
+        <div 
+          ref={scrollContainerRef}
+          className="lg:w-1/2 order-2 lg:order-2 flex lg:block overflow-x-auto lg:overflow-x-visible snap-x lg:snap-none snap-mandatory lg:snap-none no-scrollbar"
+        >
           {WORK_STEPS.map((step, index) => (
-            <div key={step.id} className="h-screen lg:h-screen flex items-start lg:items-center pt-[calc(40vh+80px)] lg:pt-0 px-4 sm:px-8 lg:px-24 snap-start snap-always">
+            <div key={step.id} className="w-screen lg:w-full shrink-0 lg:shrink h-[60vh] lg:h-screen flex items-center lg:items-center px-4 sm:px-8 lg:px-24 snap-center lg:snap-start snap-always">
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -724,6 +765,24 @@ const ArchitectureSteps = () => {
             </div>
           ))}
         </div>
+
+        {/* Mobile Controls */}
+        <div className="lg:hidden absolute bottom-8 left-0 right-0 flex justify-between px-6 z-30 pointer-events-none">
+          <button 
+            onClick={() => scrollToStep(Math.max(0, activeStep - 1))}
+            className={`w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === 0 ? 'opacity-30' : 'opacity-100'}`}
+            disabled={activeStep === 0}
+          >
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+          <button 
+            onClick={() => scrollToStep(Math.min(WORK_STEPS.length - 1, activeStep + 1))}
+            className={`w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === WORK_STEPS.length - 1 ? 'opacity-30' : 'opacity-100'}`}
+            disabled={activeStep === WORK_STEPS.length - 1}
+          >
+            <ChevronRight className="w-6 h-6 text-white" />
+          </button>
+        </div>
       </div>
     </section>
   );
@@ -732,6 +791,7 @@ const ArchitectureSteps = () => {
 const InteriorSteps = () => {
   const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<Player | null>(null);
   const [activeStep, setActiveStep] = useState(0);
@@ -739,6 +799,14 @@ const InteriorSteps = () => {
   const isInView = useInView(containerRef, { amount: 0.1 });
   const isInViewRef = useRef(false);
   const playPromiseRef = useRef<Promise<void> | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     isInViewRef.current = isInView;
@@ -786,29 +854,42 @@ const InteriorSteps = () => {
           if (data.seconds >= INTERIOR_STEPS[currentStep].endTime) {
             if (currentStep < INTERIOR_STEPS.length - 1) {
               const nextStep = currentStep + 1;
-              const container = containerRef.current;
-              if (container) {
-                const scrollPos = container.offsetTop + (nextStep * window.innerHeight);
-                window.scrollTo({ top: scrollPos, behavior: 'smooth' });
+              if (isMobile) {
+                const container = scrollContainerRef.current;
+                if (container) {
+                  container.scrollTo({ left: nextStep * window.innerWidth, behavior: 'smooth' });
+                }
+              } else {
+                const container = containerRef.current;
+                if (container) {
+                  const scrollPos = container.offsetTop + (nextStep * window.innerHeight);
+                  window.scrollTo({ top: scrollPos, behavior: 'smooth' });
+                }
               }
             }
           }
         });
       }
     }
-  }, []);
+  }, [isMobile]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
+  const { scrollXProgress } = useScroll({
+    container: scrollContainerRef,
+    axis: "x"
+  });
+
   useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (v) => {
+    const progress = isMobile ? scrollXProgress : scrollYProgress;
+    const unsubscribe = progress.on("change", (v) => {
       if (!isInViewRef.current) return;
       
       const step = Math.min(
-        Math.floor(v * INTERIOR_STEPS.length),
+        Math.floor(v * INTERIOR_STEPS.length + 0.1),
         INTERIOR_STEPS.length - 1
       );
       if (step !== activeStep) {
@@ -821,11 +902,26 @@ const InteriorSteps = () => {
       }
     });
     return () => unsubscribe();
-  }, [scrollYProgress, activeStep]);
+  }, [scrollYProgress, scrollXProgress, activeStep, isMobile]);
+
+  const scrollToStep = (index: number) => {
+    if (isMobile) {
+      const container = scrollContainerRef.current;
+      if (container) {
+        container.scrollTo({ left: index * window.innerWidth, behavior: 'smooth' });
+      }
+    } else {
+      const container = containerRef.current;
+      if (container) {
+        const scrollPos = container.offsetTop + (index * window.innerHeight);
+        window.scrollTo({ top: scrollPos, behavior: 'smooth' });
+      }
+    }
+  };
 
   return (
     <section ref={containerRef} className="relative bg-white text-devarc-dark">
-      <div className="flex flex-col lg:flex-row min-h-[300vh]">
+      <div className="flex flex-col lg:flex-row min-h-screen lg:min-h-[300vh]">
         {/* Sticky Video Side (Right) */}
         <div className="lg:w-1/2 h-[40vh] lg:h-[calc(100vh-5rem)] sticky top-[60px] lg:top-20 overflow-hidden order-1 lg:order-2 bg-black z-20">
           <div ref={videoRef} className="w-full h-full relative bg-black">
@@ -841,9 +937,12 @@ const InteriorSteps = () => {
         </div>
 
         {/* Scrollable Content Side (Left) */}
-        <div className="lg:w-1/2 order-2 lg:order-1">
+        <div 
+          ref={scrollContainerRef}
+          className="lg:w-1/2 order-2 lg:order-1 flex lg:block overflow-x-auto lg:overflow-x-visible snap-x lg:snap-none snap-mandatory lg:snap-none no-scrollbar"
+        >
           {INTERIOR_STEPS.map((step, index) => (
-            <div key={step.id} className="h-screen lg:h-screen flex items-start lg:items-center pt-[calc(40vh+80px)] lg:pt-0 px-4 sm:px-8 lg:px-24 snap-start snap-always">
+            <div key={step.id} className="w-screen lg:w-full shrink-0 lg:shrink h-[60vh] lg:h-screen flex items-center lg:items-center px-4 sm:px-8 lg:px-24 snap-center lg:snap-start snap-always">
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -863,6 +962,24 @@ const InteriorSteps = () => {
               </motion.div>
             </div>
           ))}
+        </div>
+
+        {/* Mobile Controls */}
+        <div className="lg:hidden absolute bottom-8 left-0 right-0 flex justify-between px-6 z-30 pointer-events-none">
+          <button 
+            onClick={() => scrollToStep(Math.max(0, activeStep - 1))}
+            className={`w-12 h-12 rounded-full bg-devarc-dark/5 backdrop-blur-md border border-devarc-dark/10 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === 0 ? 'opacity-30' : 'opacity-100'}`}
+            disabled={activeStep === 0}
+          >
+            <ChevronLeft className="w-6 h-6 text-devarc-dark" />
+          </button>
+          <button 
+            onClick={() => scrollToStep(Math.min(INTERIOR_STEPS.length - 1, activeStep + 1))}
+            className={`w-12 h-12 rounded-full bg-devarc-dark/5 backdrop-blur-md border border-devarc-dark/10 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === INTERIOR_STEPS.length - 1 ? 'opacity-30' : 'opacity-100'}`}
+            disabled={activeStep === INTERIOR_STEPS.length - 1}
+          >
+            <ChevronRight className="w-6 h-6 text-devarc-dark" />
+          </button>
         </div>
       </div>
     </section>
