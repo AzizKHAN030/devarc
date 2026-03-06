@@ -341,7 +341,7 @@ const Hero = () => {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center overflow-hidden snap-start bg-black">
+    <section ref={containerRef} className="relative min-h-screen flex items-center overflow-hidden lg:snap-start snap-none bg-black">
       {/* Full Screen Vimeo Background */}
       <div className="absolute inset-0 z-0 pointer-events-none bg-black">
         <motion.div style={{ scale }} className="w-full h-full relative bg-black">
@@ -469,7 +469,7 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-20 sm:py-32 bg-white snap-start">
+    <section id="services" className="py-20 sm:py-32 bg-white lg:snap-start snap-none">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-8 sm:gap-12 mb-16 sm:mb-24">
           <motion.div 
@@ -531,7 +531,7 @@ const Services = () => {
 const Portfolio = () => {
   const { t } = useTranslation();
   return (
-    <section id="portfolio" className="py-20 sm:py-32 bg-devarc-paper snap-start">
+    <section id="portfolio" className="py-20 sm:py-32 bg-devarc-paper lg:snap-start snap-none">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 sm:mb-20 gap-6">
           <motion.div 
@@ -725,7 +725,7 @@ const ArchitectureSteps = () => {
     <section ref={containerRef} className="relative bg-devarc-dark text-white">
       <div className="flex flex-col lg:flex-row min-h-screen lg:min-h-[500vh]">
         {/* Sticky Video Side */}
-        <div className="lg:w-1/2 h-[40vh] lg:h-[calc(100vh-5rem)] sticky top-[60px] lg:top-20 overflow-hidden order-1 lg:order-1 bg-black z-20">
+        <div className="lg:w-1/2 h-[40vh] lg:h-[calc(100vh-5rem)] lg:sticky static top-[60px] lg:top-20 overflow-hidden order-1 lg:order-1 bg-black z-20">
           <div ref={videoRef} className="w-full h-full relative bg-black">
             <iframe 
               src="https://player.vimeo.com/video/1169842314?background=1&autoplay=0&loop=0&byline=0&title=0&muted=1" 
@@ -741,10 +741,10 @@ const ArchitectureSteps = () => {
         {/* Scrollable Content Side */}
         <div 
           ref={scrollContainerRef}
-          className="lg:w-1/2 order-2 lg:order-2 flex lg:block overflow-x-auto lg:overflow-x-visible snap-x lg:snap-none snap-mandatory lg:snap-none no-scrollbar"
+          className="lg:w-1/2 order-2 lg:order-2 flex lg:block overflow-x-auto lg:overflow-x-visible lg:snap-none snap-none lg:snap-none snap-none no-scrollbar"
         >
           {WORK_STEPS.map((step, index) => (
-            <div key={step.id} className="w-screen lg:w-full shrink-0 lg:shrink h-[60vh] lg:h-screen flex items-center lg:items-center px-4 sm:px-8 lg:px-24 snap-center lg:snap-start snap-always">
+            <div key={step.id} className="w-screen lg:w-full shrink-0 lg:shrink h-[50vh] lg:h-screen flex items-start lg:items-center pt-8 lg:pt-0 px-4 sm:px-8 lg:px-24 lg:snap-start snap-none lg:snap-always">
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -923,7 +923,7 @@ const InteriorSteps = () => {
     <section ref={containerRef} className="relative bg-white text-devarc-dark">
       <div className="flex flex-col lg:flex-row min-h-screen lg:min-h-[300vh]">
         {/* Sticky Video Side (Right) */}
-        <div className="lg:w-1/2 h-[40vh] lg:h-[calc(100vh-5rem)] sticky top-[60px] lg:top-20 overflow-hidden order-1 lg:order-2 bg-black z-20">
+        <div className="lg:w-1/2 h-[40vh] lg:h-[calc(100vh-5rem)] lg:sticky static top-[60px] lg:top-20 overflow-hidden order-1 lg:order-2 bg-black z-20">
           <div ref={videoRef} className="w-full h-full relative bg-black">
             <iframe 
               src="https://player.vimeo.com/video/1169842748?background=1&autoplay=0&loop=0&byline=0&title=0&muted=1" 
@@ -939,10 +939,10 @@ const InteriorSteps = () => {
         {/* Scrollable Content Side (Left) */}
         <div 
           ref={scrollContainerRef}
-          className="lg:w-1/2 order-2 lg:order-1 flex lg:block overflow-x-auto lg:overflow-x-visible snap-x lg:snap-none snap-mandatory lg:snap-none no-scrollbar"
+          className="lg:w-1/2 order-2 lg:order-1 flex lg:block overflow-x-auto lg:overflow-x-visible lg:snap-none snap-none lg:snap-none snap-none no-scrollbar"
         >
           {INTERIOR_STEPS.map((step, index) => (
-            <div key={step.id} className="w-screen lg:w-full shrink-0 lg:shrink h-[60vh] lg:h-screen flex items-center lg:items-center px-4 sm:px-8 lg:px-24 snap-center lg:snap-start snap-always">
+            <div key={step.id} className="w-screen lg:w-full shrink-0 lg:shrink h-[50vh] lg:h-screen flex items-start lg:items-center pt-8 lg:pt-0 px-4 sm:px-8 lg:px-24 lg:snap-start snap-none lg:snap-always">
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -992,7 +992,7 @@ const About = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="about" className="py-20 sm:py-32 bg-white overflow-hidden snap-start">
+    <section id="about" className="py-20 sm:py-32 bg-white overflow-hidden lg:snap-start snap-none">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div ref={ref} className="relative">
@@ -1070,7 +1070,7 @@ const About = () => {
 const Contact = () => {
   const { t } = useTranslation();
   return (
-    <section id="contact" className="py-20 sm:py-32 bg-white snap-start">
+    <section id="contact" className="py-20 sm:py-32 bg-white lg:snap-start snap-none">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="bg-devarc-dark rounded-3xl sm:rounded-[4rem] p-8 sm:p-12 lg:p-24 relative overflow-hidden">
           {/* Background Pattern */}
@@ -1143,7 +1143,7 @@ const Contact = () => {
 const Footer = () => {
   const { t } = useTranslation();
   return (
-    <footer className="bg-white py-12 sm:py-20 border-t border-devarc-dark/5 snap-start">
+    <footer className="bg-white py-12 sm:py-20 border-t border-devarc-dark/5 lg:snap-start snap-none">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 sm:gap-12">
           <div className="text-2xl sm:text-3xl font-display font-bold tracking-tighter text-devarc-dark">
