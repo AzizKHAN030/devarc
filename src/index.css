@@ -16,7 +16,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    @apply snap-y snap-mandatory;
+    scroll-snap-type: y proximity;
   }
   body {
     @apply bg-devarc-white text-devarc-dark font-sans antialiased;
