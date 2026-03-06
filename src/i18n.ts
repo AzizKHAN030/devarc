@@ -9,7 +9,8 @@ const resources = {
         portfolio: 'Портфолио',
         about: 'О нас',
         contact: 'Контакты',
-        inquiry: 'Запрос'
+        inquiry: 'Запрос',
+        backToHome: 'Вернуться на главную'
       },
       hero: {
         est: 'Осн. 2012 — Архитектурная студия',
@@ -50,6 +51,8 @@ const resources = {
         tag: 'Портфолио',
         title: 'Избранные работы',
         viewAll: 'Посмотреть все проекты',
+        allProjects: 'Все проекты',
+        allProjectsDesc: 'Исследуйте нашу полную коллекцию архитектурных чудес, интерьерных святилищ и экстерьерных ландшафтов.',
         categories: {
           architecture: 'Архитектура',
           interior: 'Интерьер',
@@ -137,7 +140,8 @@ const resources = {
         portfolio: 'Portfolio',
         about: 'About',
         contact: 'Contact',
-        inquiry: 'Inquiry'
+        inquiry: 'Inquiry',
+        backToHome: 'Back to Home'
       },
       hero: {
         est: 'Est. 2012 — Architecture Studio',
@@ -178,6 +182,8 @@ const resources = {
         tag: 'Portfolio',
         title: 'Selected Works',
         viewAll: 'View All Projects',
+        allProjects: 'All Projects',
+        allProjectsDesc: 'Explore our complete collection of architectural marvels, interior sanctuaries, and exterior landscapes.',
         categories: {
           architecture: 'Architecture',
           interior: 'Interior',
@@ -265,7 +271,8 @@ const resources = {
         portfolio: 'Portfolio',
         about: 'Biz haqimizda',
         contact: 'Aloqa',
-        inquiry: 'Soʻrov'
+        inquiry: 'Soʻrov',
+        backToHome: 'Bosh sahifaga qaytish'
       },
       hero: {
         est: 'Asos. 2012 — Arxitektura studiyasi',
@@ -306,6 +313,8 @@ const resources = {
         tag: 'Portfolio',
         title: 'Tanlangan ishlar',
         viewAll: 'Barcha loyihalarni koʻrish',
+        allProjects: 'Barcha loyihalar',
+        allProjectsDesc: 'Bizning arxitektura moʻjizalari, interyer maskanlari va eksteryer landshaftlarining toʻliq toʻplamini oʻrganing.',
         categories: {
           architecture: 'Arxitektura',
           interior: 'Interyer',

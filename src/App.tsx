@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'motion/react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import Player from '@vimeo/player';
 import { useTranslation } from 'react-i18next';
+import { PROJECTS } from './data/projects';
+import ProjectsPage from './pages/ProjectsPage';
 import { 
   Menu, 
   X, 
@@ -42,15 +45,6 @@ interface Service {
 }
 
 // --- Data ---
-const PROJECTS: Project[] = [
-  { id: 1, title: 'The Obsidian Villa', category: 'Architecture', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200', year: '2024' },
-  { id: 2, title: 'Nordic Light Loft', category: 'Interior', image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=1200', year: '2023' },
-  { id: 3, title: 'Azure Garden Estate', category: 'Exterior', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200', year: '2024' },
-  { id: 4, title: 'Crystal Pavilion', category: 'Architecture', image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=1200', year: '2022' },
-  { id: 5, title: 'Ethereal Living', category: 'Interior', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=1200', year: '2023' },
-  { id: 6, title: 'Serenity Poolside', category: 'Exterior', image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1200', year: '2024' },
-];
-
 const WORK_STEPS = [
   {
     id: 1,
@@ -170,6 +164,8 @@ const Navbar = () => {
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -188,19 +184,35 @@ const Navbar = () => {
     { name: t('nav.contact'), id: 'contact' }
   ];
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    if (location.pathname !== '/') {
+      e.preventDefault();
+      navigate(`/#${id}`);
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  };
+
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/80 backdrop-blur-xl py-4 border-b border-devarc-dark/5' : 'bg-transparent py-8'}`}>
       <div className="container mx-auto px-4 sm:px-8 flex justify-between items-center">
-        <motion.a 
+        <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          href="#" 
-          className="flex items-center gap-2 group"
         >
-          <div className={`text-2xl font-display font-bold tracking-tighter transition-colors duration-500 ${isScrolled ? 'text-devarc-dark' : 'text-white'}`}>
-            DEV<span className="text-devarc-accent">ARC</span>
-          </div>
-        </motion.a>
+          <Link 
+            to="/" 
+            className="flex items-center gap-2 group"
+          >
+            <div className={`text-2xl font-display font-bold tracking-tighter transition-colors duration-500 ${isScrolled ? 'text-devarc-dark' : 'text-white'}`}>
+              DEV<span className="text-devarc-accent">ARC</span>
+            </div>
+          </Link>
+        </motion.div>
 
         <div className="hidden md:flex items-center gap-12">
           {navItems.map((item, i) => (
@@ -210,6 +222,7 @@ const Navbar = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               href={`#${item.id}`}
+              onClick={(e) => handleNavClick(e, item.id)}
               className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-colors relative group ${isScrolled ? 'text-devarc-dark/60' : 'text-white/60'} hover:text-devarc-accent`}
             >
               {item.name}
@@ -543,16 +556,16 @@ const Portfolio = () => {
             <h2 className="text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-4 sm:mb-6">{t('portfolio.tag')}</h2>
             <h3 className="text-4xl sm:text-5xl font-display font-bold text-devarc-dark tracking-tighter">{t('portfolio.title')}</h3>
           </motion.div>
-          <motion.button 
-            whileHover={{ x: 10 }}
-            className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-devarc-dark"
+          <Link 
+            to="/projects"
+            className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-devarc-dark hover:text-devarc-accent transition-colors group"
           >
-            {t('portfolio.viewAll')} <ArrowRight size={16} />
-          </motion.button>
+            {t('portfolio.viewAll')} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 sm:gap-12">
-          {PROJECTS.map((project, idx) => (
+          {PROJECTS.slice(0, 6).map((project, idx) => (
             <motion.div 
               key={project.id}
               initial={{ opacity: 0, y: 50 }}
@@ -1167,11 +1180,9 @@ const Footer = () => {
   );
 };
 
-export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
+const HomePage = () => {
   const archRef = useRef(null);
   const intRef = useRef(null);
-  
   const isArchInView = useInView(archRef, { margin: "-10% 0px -10% 0px" });
   const isIntInView = useInView(intRef, { margin: "-10% 0px -10% 0px" });
 
@@ -1184,20 +1195,8 @@ export default function App() {
     }
   }, [isArchInView, isIntInView]);
 
-  useEffect(() => {
-    // Simulate preloading time
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className="min-h-screen selection:bg-devarc-accent selection:text-white relative">
-      <AnimatePresence mode="wait">
-        {isLoading && <Preloader key="loader" />}
-      </AnimatePresence>
-      <Navbar />
+    <>
       <Hero />
       <Services />
       <Portfolio />
@@ -1209,7 +1208,44 @@ export default function App() {
       </div>
       <About />
       <Contact />
-      <Footer />
-    </div>
+    </>
+  );
+};
+
+export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    // Simulate preloading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <Router>
+      <div className="min-h-screen selection:bg-devarc-accent selection:text-white relative">
+        <AnimatePresence mode="wait">
+          {isLoading ? (
+            <Preloader key="loader" />
+          ) : (
+            <motion.div
+              key="content"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              <Navbar />
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/projects" element={<ProjectsPage />} />
+              </Routes>
+              <Footer />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </Router>
   );
 }
