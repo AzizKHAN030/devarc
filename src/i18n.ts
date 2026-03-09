@@ -130,6 +130,26 @@ const resources = {
       },
       footer: {
         rights: '© 2024 Студия DEVARC'
+      },
+      whyUs: {
+        tag: 'Почему мы',
+        title: 'Совершенство в каждой детали.',
+        precision: {
+          title: 'Точное проектирование',
+          desc: 'Тщательное внимание к каждому миллиметру, гарантирующее структурное совершенство.'
+        },
+        sustainable: {
+          title: 'Устойчивый дизайн',
+          desc: 'Экологичные материалы и энергоэффективные решения для зеленого будущего.'
+        },
+        innovation: {
+          title: 'Инновационные технологии',
+          desc: 'Использование VR и продвинутого 3D-моделирования для визуализации вашей мечты.'
+        },
+        client: {
+          title: 'Клиентоориентированность',
+          desc: 'Ваше видение — наш чертеж. Мы ставим в приоритет персонализированный подход.'
+        }
       }
     }
   },
@@ -261,6 +281,26 @@ const resources = {
       },
       footer: {
         rights: '© 2024 DEVARC Studio'
+      },
+      whyUs: {
+        tag: 'Why Choose Us',
+        title: 'Excellence in every detail.',
+        precision: {
+          title: 'Precision Engineering',
+          desc: 'Meticulous attention to every millimeter, ensuring structural perfection.'
+        },
+        sustainable: {
+          title: 'Sustainable Design',
+          desc: 'Eco-friendly materials and energy-efficient solutions for a greener future.'
+        },
+        innovation: {
+          title: 'Innovative Technology',
+          desc: 'Utilizing VR and advanced 3D modeling to visualize your dream before it’s built.'
+        },
+        client: {
+          title: 'Client-Centric',
+          desc: 'Your vision is our blueprint. We prioritize personalized design journeys.'
+        }
       }
     }
   },
@@ -392,6 +432,26 @@ const resources = {
       },
       footer: {
         rights: '© 2024 DEVARC studiyasi'
+      },
+      whyUs: {
+        tag: 'Nega biz',
+        title: 'Har bir detalda mukammallik.',
+        precision: {
+          title: 'Aniq loyihalash',
+          desc: 'Har bir millimetrga sinchkovlik bilan eʼtibor, struktura mukammalligini kafolatlaydi.'
+        },
+        sustainable: {
+          title: 'Barqaror dizayn',
+          desc: 'Yashil kelajak uchun ekologik toza materiallar va energiya tejovchi yechimlar.'
+        },
+        innovation: {
+          title: 'Innovatsion texnologiyalar',
+          desc: 'Orzuingizni vizuallashtirish uchun VR va ilgʻor 3D modellashtirishdan foydalanish.'
+        },
+        client: {
+          title: 'Mijozga yoʻnaltirilganlik',
+          desc: 'Sizning qarashingiz — bizning chizmamiz. Biz shaxsiy yondashuvni birinchi oʻringa qoʻyamiz.'
+        }
       }
     }
   }

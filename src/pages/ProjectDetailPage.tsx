@@ -226,7 +226,7 @@ const ProjectDetailPage = () => {
                 allow="xr-spatial-tracking; gyroscope; accelerometer" 
                 allowFullScreen 
                 scrolling="no" 
-                src="https://kuula.co/share/hWJxQ?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1"
+                src="https://kuula.co/share/collection/7HGGg?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1"
                 title="360 Immersive View"
               ></iframe>
             </motion.div>

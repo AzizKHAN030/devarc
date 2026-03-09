@@ -27,7 +27,10 @@ import {
   ArrowUpRight,
   Plus,
   ChevronDown,
-  Globe
+  Globe,
+  PencilRuler,
+  Leaf,
+  Cpu
 } from 'lucide-react';
 
 // --- Types ---
@@ -212,7 +215,7 @@ const Navbar = () => {
     }
   };
 
-  const isProjectsPage = location.pathname === '/projects';
+  const isDarkHeaderPage = location.pathname.startsWith('/projects');
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
@@ -220,7 +223,7 @@ const Navbar = () => {
         ? 'bg-white py-4 border-b border-devarc-dark/5'
         : isScrolled 
           ? 'bg-white/80 backdrop-blur-xl py-4 border-b border-devarc-dark/5' 
-          : isProjectsPage ? 'bg-devarc-dark py-8' : 'bg-transparent py-8'
+          : isDarkHeaderPage ? 'bg-devarc-dark py-8' : 'bg-transparent py-8'
     }`}>
       <div className="container mx-auto px-4 sm:px-8 flex justify-between items-center">
         <motion.div 
@@ -581,6 +584,79 @@ const Services = () => {
                   </li>
                 ))}
               </ul>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const WhyUs = () => {
+  const { t } = useTranslation();
+
+  const advantages = [
+    {
+      title: t('whyUs.precision.title'),
+      desc: t('whyUs.precision.desc'),
+      icon: <PencilRuler className="w-8 h-8 text-devarc-accent" />
+    },
+    {
+      title: t('whyUs.sustainable.title'),
+      desc: t('whyUs.sustainable.desc'),
+      icon: <Leaf className="w-8 h-8 text-devarc-accent" />
+    },
+    {
+      title: t('whyUs.innovation.title'),
+      desc: t('whyUs.innovation.desc'),
+      icon: <Cpu className="w-8 h-8 text-devarc-accent" />
+    },
+    {
+      title: t('whyUs.client.title'),
+      desc: t('whyUs.client.desc'),
+      icon: <Users className="w-8 h-8 text-devarc-accent" />
+    }
+  ];
+
+  return (
+    <section className="py-20 sm:py-32 bg-devarc-paper lg:snap-start snap-none overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-8">
+        <div className="flex flex-col lg:flex-row justify-between items-end gap-8 mb-16 sm:mb-24">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+            className="max-w-2xl"
+          >
+            <h2 className="text-devarc-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-4 sm:mb-6">{t('whyUs.tag')}</h2>
+            <h3 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-devarc-dark leading-tight tracking-tighter">
+              {t('whyUs.title')}
+            </h3>
+          </motion.div>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 items-stretch">
+          {advantages.map((adv, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: idx * 0.1 }}
+              viewport={{ once: true }}
+              className="group h-full"
+            >
+              <div className="h-full p-8 bg-white rounded-2xl shadow-sm border border-devarc-dark/5 group-hover:border-devarc-accent/20 transition-all duration-500 group-hover:shadow-xl group-hover:-translate-y-2 flex flex-col">
+                <div className="mb-8 w-16 h-16 rounded-2xl bg-devarc-accent/5 flex items-center justify-center group-hover:bg-devarc-accent group-hover:text-white transition-all duration-500 shrink-0">
+                  {React.cloneElement(adv.icon as React.ReactElement, { className: "w-8 h-8 transition-colors duration-500" })}
+                </div>
+                <h4 className="text-lg sm:text-xl font-display font-bold text-devarc-dark mb-4 leading-tight break-words">
+                  {adv.title}
+                </h4>
+                <p className="text-devarc-muted text-sm leading-relaxed mt-auto">
+                  {adv.desc}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -1217,6 +1293,7 @@ const HomePage = () => {
     <>
       <Hero />
       <Services />
+      <WhyUs />
       <Portfolio />
       <div ref={archRef}>
         <ArchitectureSteps />
