@@ -7,6 +7,7 @@ export interface Project {
   year: string;
   description: string;
   gallery: string[];
+  kuulaSrc?: string;
 }
 
 export const PROJECTS: Project[] = [
@@ -24,7 +25,8 @@ export const PROJECTS: Project[] = [
       'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1200',
       'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&q=80&w=1200',
       'https://images.unsplash.com/photo-1600585154526-990dcea4db0d?auto=format&fit=crop&q=80&w=1200'
-    ]
+    ],
+    kuulaSrc: 'https://kuula.co/share/collection/7HGGg?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1'
   },
   { 
     id: 2, 
@@ -38,7 +40,8 @@ export const PROJECTS: Project[] = [
       'https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&q=80&w=1200',
       'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=1200',
       'https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?auto=format&fit=crop&q=80&w=1200'
-    ]
+    ],
+    kuulaSrc: 'https://kuula.co/share/collection/7HGGg?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1'
   },
   { 
     id: 3, 
@@ -52,7 +55,8 @@ export const PROJECTS: Project[] = [
       'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1200',
       'https://images.unsplash.com/photo-1506619216599-9d16d0903dfd?auto=format&fit=crop&q=80&w=1200',
       'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=1200'
-    ]
+    ],
+    kuulaSrc: 'https://kuula.co/share/collection/7HGGg?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1'
   },
   { 
     id: 4, 
@@ -65,7 +69,8 @@ export const PROJECTS: Project[] = [
       'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=1200',
       'https://images.unsplash.com/photo-1503387762-592dec5832f2?auto=format&fit=crop&q=80&w=1200',
       'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200'
-    ]
+    ],
+    kuulaSrc: 'https://kuula.co/share/collection/7HGGg?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1'
   },
   { 
     id: 5, 
@@ -78,7 +83,8 @@ export const PROJECTS: Project[] = [
       'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=1200',
       'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=1200',
       'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80&w=1200'
-    ]
+    ],
+    kuulaSrc: 'https://kuula.co/share/collection/7HGGg?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1'
   },
   { 
     id: 6, 
@@ -90,6 +96,7 @@ export const PROJECTS: Project[] = [
     gallery: [
       'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1200',
       'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=1200'
-    ]
+    ],
+    kuulaSrc: 'https://kuula.co/share/collection/7HGGg?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1'
   },
 ];

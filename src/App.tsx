@@ -41,6 +41,7 @@ interface Project {
   category: 'Architecture' | 'Interior' | 'Exterior';
   image: string;
   year: string;
+  kuulaSrc?: string;
 }
 
 interface Service {

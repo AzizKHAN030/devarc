@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, ArrowUpRight, Globe, Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Globe, Maximize2, X, ChevronLeft, ChevronRight, Rotate3d } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
 
 const ProjectDetailPage = () => {
@@ -164,7 +164,7 @@ const ProjectDetailPage = () => {
                       onClick={() => setShowImmersive(true)}
                       className="w-full bg-devarc-dark text-white py-6 rounded-2xl font-bold uppercase tracking-widest text-[11px] flex items-center justify-center gap-3 group hover:bg-devarc-accent transition-all duration-500"
                     >
-                      <Globe size={18} className="group-hover:rotate-12 transition-transform" />
+                      <Rotate3d size={18} className="group-hover:rotate-12 transition-transform" />
                       See Immersive 360°
                     </motion.button>
                   </div>
@@ -226,7 +226,7 @@ const ProjectDetailPage = () => {
                 allow="xr-spatial-tracking; gyroscope; accelerometer" 
                 allowFullScreen 
                 scrolling="no" 
-                src="https://kuula.co/share/collection/7HGGg?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1"
+                src={project.kuulaSrc || "https://kuula.co/share/collection/7HGGg?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1"}
                 title="360 Immersive View"
               ></iframe>
             </motion.div>
