@@ -5,6 +5,7 @@ import Player from '@vimeo/player';
 import { useTranslation } from 'react-i18next';
 import { PROJECTS } from './data/projects';
 import ProjectsPage from './pages/ProjectsPage';
+import ProjectDetailPage from './pages/ProjectDetailPage';
 import { 
   Menu, 
   X, 
@@ -611,7 +612,7 @@ const Portfolio = () => {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 sm:gap-12">
+              <div className="grid md:grid-cols-2 gap-8 sm:gap-12">
           {PROJECTS.slice(0, 6).map((project, idx) => (
             <motion.div 
               key={project.id}
@@ -621,26 +622,28 @@ const Portfolio = () => {
               viewport={{ once: true }}
               className="group cursor-pointer"
             >
-              <div className="relative aspect-[16/10] rounded-2xl sm:rounded-[2rem] overflow-hidden mb-6 sm:mb-8">
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-4 group-hover:translate-y-0">
-                  <ArrowUpRight size={20} className="text-white" />
+              <Link to={`/projects/${project.id}`}>
+                <div className="relative aspect-[16/10] rounded-2xl sm:rounded-[2rem] overflow-hidden mb-6 sm:mb-8">
+                  <img 
+                    src={project.image} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-4 group-hover:translate-y-0">
+                    <ArrowUpRight size={20} className="text-white" />
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between items-start">
-                <div>
-                  <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.3em] text-devarc-accent mb-1 sm:mb-2 block">
-                    {t(`portfolio.categories.${project.category.toLowerCase()}`)}
-                  </span>
-                  <h4 className="text-xl sm:text-2xl font-display font-bold text-devarc-dark group-hover:text-devarc-accent transition-colors">{project.title}</h4>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.3em] text-devarc-accent mb-1 sm:mb-2 block">
+                      {t(`portfolio.categories.${project.category.toLowerCase()}`)}
+                    </span>
+                    <h4 className="text-xl sm:text-2xl font-display font-bold text-devarc-dark group-hover:text-devarc-accent transition-colors">{project.title}</h4>
+                  </div>
+                  <span className="text-[10px] sm:text-[11px] font-bold text-devarc-muted mt-2">{project.year}</span>
                 </div>
-                <span className="text-[10px] sm:text-[11px] font-bold text-devarc-muted mt-2">{project.year}</span>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -712,24 +715,7 @@ const ArchitectureSteps = () => {
         playerRef.current.on('timeupdate', (data) => {
           if (!isInViewRef.current) return;
           
-          const currentStep = activeStepRef.current;
-          if (data.seconds >= WORK_STEPS[currentStep].endTime) {
-            if (currentStep < WORK_STEPS.length - 1) {
-              const nextStep = currentStep + 1;
-              if (isMobile) {
-                const container = scrollContainerRef.current;
-                if (container) {
-                  container.scrollTo({ left: nextStep * window.innerWidth, behavior: 'smooth' });
-                }
-              } else {
-                const container = containerRef.current;
-                if (container) {
-                  const scrollPos = container.offsetTop + (nextStep * window.innerHeight);
-                  window.scrollTo({ top: scrollPos, behavior: 'smooth' });
-                }
-              }
-            }
-          }
+          // Autoscroll removed as per user request
         });
       }
     }
@@ -827,20 +813,20 @@ const ArchitectureSteps = () => {
         </div>
 
         {/* Mobile Controls */}
-        <div className="lg:hidden absolute bottom-8 left-0 right-0 flex justify-between px-6 z-30 pointer-events-none">
+        <div className="lg:hidden absolute top-[calc(40vh+18vh)] -translate-y-1/2 left-0 right-0 flex justify-between px-4 z-30 pointer-events-none">
           <button 
             onClick={() => scrollToStep(Math.max(0, activeStep - 1))}
-            className={`w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === 0 ? 'opacity-30' : 'opacity-100'}`}
+            className={`w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === 0 ? 'opacity-30' : 'opacity-100'}`}
             disabled={activeStep === 0}
           >
-            <ChevronLeft className="w-6 h-6 text-white" />
+            <ChevronLeft className="w-5 h-5 text-white" />
           </button>
           <button 
             onClick={() => scrollToStep(Math.min(WORK_STEPS.length - 1, activeStep + 1))}
-            className={`w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === WORK_STEPS.length - 1 ? 'opacity-30' : 'opacity-100'}`}
+            className={`w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === WORK_STEPS.length - 1 ? 'opacity-30' : 'opacity-100'}`}
             disabled={activeStep === WORK_STEPS.length - 1}
           >
-            <ChevronRight className="w-6 h-6 text-white" />
+            <ChevronRight className="w-5 h-5 text-white" />
           </button>
         </div>
       </div>
@@ -910,24 +896,7 @@ const InteriorSteps = () => {
         playerRef.current.on('timeupdate', (data) => {
           if (!isInViewRef.current) return;
           
-          const currentStep = activeStepRef.current;
-          if (data.seconds >= INTERIOR_STEPS[currentStep].endTime) {
-            if (currentStep < INTERIOR_STEPS.length - 1) {
-              const nextStep = currentStep + 1;
-              if (isMobile) {
-                const container = scrollContainerRef.current;
-                if (container) {
-                  container.scrollTo({ left: nextStep * window.innerWidth, behavior: 'smooth' });
-                }
-              } else {
-                const container = containerRef.current;
-                if (container) {
-                  const scrollPos = container.offsetTop + (nextStep * window.innerHeight);
-                  window.scrollTo({ top: scrollPos, behavior: 'smooth' });
-                }
-              }
-            }
-          }
+          // Autoscroll removed as per user request
         });
       }
     }
@@ -1025,20 +994,20 @@ const InteriorSteps = () => {
         </div>
 
         {/* Mobile Controls */}
-        <div className="lg:hidden absolute bottom-8 left-0 right-0 flex justify-between px-6 z-30 pointer-events-none">
+        <div className="lg:hidden absolute top-[calc(40vh+18vh)] -translate-y-1/2 left-0 right-0 flex justify-between px-4 z-30 pointer-events-none">
           <button 
             onClick={() => scrollToStep(Math.max(0, activeStep - 1))}
-            className={`w-12 h-12 rounded-full bg-devarc-dark/5 backdrop-blur-md border border-devarc-dark/10 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === 0 ? 'opacity-30' : 'opacity-100'}`}
+            className={`w-10 h-10 rounded-full bg-devarc-dark/5 backdrop-blur-md border border-devarc-dark/10 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === 0 ? 'opacity-30' : 'opacity-100'}`}
             disabled={activeStep === 0}
           >
-            <ChevronLeft className="w-6 h-6 text-devarc-dark" />
+            <ChevronLeft className="w-5 h-5 text-devarc-dark" />
           </button>
           <button 
             onClick={() => scrollToStep(Math.min(INTERIOR_STEPS.length - 1, activeStep + 1))}
-            className={`w-12 h-12 rounded-full bg-devarc-dark/5 backdrop-blur-md border border-devarc-dark/10 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === INTERIOR_STEPS.length - 1 ? 'opacity-30' : 'opacity-100'}`}
+            className={`w-10 h-10 rounded-full bg-devarc-dark/5 backdrop-blur-md border border-devarc-dark/10 flex items-center justify-center pointer-events-auto transition-opacity ${activeStep === INTERIOR_STEPS.length - 1 ? 'opacity-30' : 'opacity-100'}`}
             disabled={activeStep === INTERIOR_STEPS.length - 1}
           >
-            <ChevronRight className="w-6 h-6 text-devarc-dark" />
+            <ChevronRight className="w-5 h-5 text-devarc-dark" />
           </button>
         </div>
       </div>
@@ -1289,6 +1258,7 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/projects" element={<ProjectsPage />} />
+                <Route path="/projects/:id" element={<ProjectDetailPage />} />
               </Routes>
               <Footer />
             </motion.div>
