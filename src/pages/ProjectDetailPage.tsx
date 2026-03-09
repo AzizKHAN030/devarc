@@ -10,6 +10,7 @@ const ProjectDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [showImmersive, setShowImmersive] = useState(false);
   const project = PROJECTS.find(p => p.id === Number(id));
 
   const handleNext = (e?: React.MouseEvent) => {
@@ -160,6 +161,7 @@ const ProjectDetailPage = () => {
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
+                      onClick={() => setShowImmersive(true)}
                       className="w-full bg-devarc-dark text-white py-6 rounded-2xl font-bold uppercase tracking-widest text-[11px] flex items-center justify-center gap-3 group hover:bg-devarc-accent transition-all duration-500"
                     >
                       <Globe size={18} className="group-hover:rotate-12 transition-transform" />
@@ -186,6 +188,51 @@ const ProjectDetailPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Immersive 360 View */}
+      <AnimatePresence>
+        {showImmersive && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-devarc-dark/95 backdrop-blur-xl flex items-center justify-center p-4 sm:p-12"
+            onClick={() => setShowImmersive(false)}
+          >
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="absolute top-8 right-8 text-white/60 hover:text-white transition-colors z-[110] p-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowImmersive(false);
+              }}
+            >
+              <X size={32} />
+            </motion.button>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="w-full max-w-6xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe 
+                width="100%" 
+                height="100%" 
+                frameBorder="0" 
+                allow="xr-spatial-tracking; gyroscope; accelerometer" 
+                allowFullScreen 
+                scrolling="no" 
+                src="https://kuula.co/share/hWJxQ?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1"
+                title="360 Immersive View"
+              ></iframe>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Lightbox */}
       <AnimatePresence>
