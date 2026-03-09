@@ -197,8 +197,14 @@ const Navbar = () => {
     }
   };
 
+  const isProjectsPage = location.pathname === '/projects';
+
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/80 backdrop-blur-xl py-4 border-b border-devarc-dark/5' : 'bg-transparent py-8'}`}>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+      isScrolled 
+        ? 'bg-white/80 backdrop-blur-xl py-4 border-b border-devarc-dark/5' 
+        : isProjectsPage ? 'bg-devarc-dark py-8' : 'bg-transparent py-8'
+    }`}>
       <div className="container mx-auto px-4 sm:px-8 flex justify-between items-center">
         <motion.div 
           initial={{ opacity: 0 }}
@@ -208,7 +214,9 @@ const Navbar = () => {
             to="/" 
             className="flex items-center gap-2 group"
           >
-            <div className={`text-2xl font-display font-bold tracking-tighter transition-colors duration-500 ${isScrolled ? 'text-devarc-dark' : 'text-white'}`}>
+            <div className={`text-2xl font-display font-bold tracking-tighter transition-colors duration-500 ${
+              isScrolled ? 'text-devarc-dark' : 'text-white'
+            }`}>
               DEV<span className="text-devarc-accent">ARC</span>
             </div>
           </Link>
@@ -223,7 +231,9 @@ const Navbar = () => {
               transition={{ delay: i * 0.1 }}
               href={`#${item.id}`}
               onClick={(e) => handleNavClick(e, item.id)}
-              className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-colors relative group ${isScrolled ? 'text-devarc-dark/60' : 'text-white/60'} hover:text-devarc-accent`}
+              className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-colors relative group ${
+                isScrolled ? 'text-devarc-dark/60' : 'text-white/60'
+              } hover:text-devarc-accent`}
             >
               {item.name}
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-devarc-accent transition-all duration-300 group-hover:w-full"></span>
@@ -253,7 +263,9 @@ const Navbar = () => {
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className={`px-8 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all duration-500 ${isScrolled ? 'bg-devarc-dark text-white shadow-devarc-dark/10' : 'bg-white text-devarc-dark shadow-white/10'} hover:bg-devarc-accent hover:text-white shadow-xl`}
+            className={`px-8 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all duration-500 ${
+              isScrolled ? 'bg-devarc-dark text-white shadow-devarc-dark/10' : 'bg-white text-devarc-dark shadow-white/10'
+            } hover:bg-devarc-accent hover:text-white shadow-xl`}
           >
             {t('nav.inquiry')}
           </motion.button>
@@ -1188,7 +1200,9 @@ const HomePage = () => {
 
   useEffect(() => {
     const isDesktop = window.innerWidth >= 1024;
-    if (isDesktop && (isArchInView || isIntInView)) {
+    const isTouch = !window.matchMedia('(hover: hover)').matches;
+    
+    if (isDesktop && !isTouch && (isArchInView || isIntInView)) {
       document.documentElement.classList.add('snap-mandatory-active');
     } else {
       document.documentElement.classList.remove('snap-mandatory-active');

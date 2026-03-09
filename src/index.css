@@ -19,7 +19,7 @@
     scroll-padding-top: 60px;
   }
   
-  @media (min-width: 1024px) {
+  @media (min-width: 1024px) and (hover: hover) {
     html {
       scroll-snap-type: y proximity;
     }
