@@ -25,6 +25,7 @@ import {
   CheckCircle2,
   ArrowUpRight,
   Plus,
+  ChevronDown,
   Globe
 } from 'lucide-react';
 
@@ -164,17 +165,30 @@ const Navbar = () => {
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const langRef = useRef<HTMLDivElement>(null);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
+    setIsLangOpen(false);
   };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(event.target as Node)) {
+        setIsLangOpen(false);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const navItems = [
@@ -201,9 +215,11 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-      isScrolled 
-        ? 'bg-white/80 backdrop-blur-xl py-4 border-b border-devarc-dark/5' 
-        : isProjectsPage ? 'bg-devarc-dark py-8' : 'bg-transparent py-8'
+      isMobileMenuOpen
+        ? 'bg-white py-4 border-b border-devarc-dark/5'
+        : isScrolled 
+          ? 'bg-white/80 backdrop-blur-xl py-4 border-b border-devarc-dark/5' 
+          : isProjectsPage ? 'bg-devarc-dark py-8' : 'bg-transparent py-8'
     }`}>
       <div className="container mx-auto px-4 sm:px-8 flex justify-between items-center">
         <motion.div 
@@ -215,14 +231,15 @@ const Navbar = () => {
             className="flex items-center gap-2 group"
           >
             <div className={`text-2xl font-display font-bold tracking-tighter transition-colors duration-500 ${
-              isScrolled ? 'text-devarc-dark' : 'text-white'
+              isScrolled || isMobileMenuOpen ? 'text-devarc-dark' : 'text-white'
             }`}>
               DEV<span className="text-devarc-accent">ARC</span>
             </div>
           </Link>
         </motion.div>
 
-        <div className="hidden md:flex items-center gap-12">
+        {/* Desktop Menu - Increased breakpoint to lg for tablet compatibility */}
+        <div className="hidden lg:flex items-center gap-8 xl:gap-12">
           {navItems.map((item, i) => (
             <motion.a 
               key={item.id}
@@ -231,7 +248,7 @@ const Navbar = () => {
               transition={{ delay: i * 0.1 }}
               href={`#${item.id}`}
               onClick={(e) => handleNavClick(e, item.id)}
-              className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-colors relative group ${
+              className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-colors relative group whitespace-nowrap ${
                 isScrolled ? 'text-devarc-dark/60' : 'text-white/60'
               } hover:text-devarc-accent`}
             >
@@ -240,30 +257,48 @@ const Navbar = () => {
             </motion.a>
           ))}
           
-          {/* Language Switcher */}
-          <div className="flex items-center gap-4 border-l border-devarc-dark/10 pl-8 ml-4">
-            <Globe size={14} className={isScrolled ? 'text-devarc-dark/40' : 'text-white/40'} />
-            <div className="flex gap-3">
-              {['RU', 'EN', 'UZ'].map((lang) => (
-                <button
-                  key={lang}
-                  onClick={() => changeLanguage(lang.toLowerCase())}
-                  className={`text-[10px] font-bold transition-colors ${
-                    i18n.language.toUpperCase() === lang 
-                      ? 'text-devarc-accent' 
-                      : isScrolled ? 'text-devarc-dark/40 hover:text-devarc-dark' : 'text-white/40 hover:text-white'
-                  }`}
+          {/* Language Dropdown */}
+          <div className="relative" ref={langRef}>
+            <button 
+              onClick={() => setIsLangOpen(!isLangOpen)}
+              className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-colors ${
+                isScrolled ? 'text-devarc-dark/60' : 'text-white/60'
+              } hover:text-devarc-accent`}
+            >
+              <Globe size={14} />
+              <span>{i18n.language.toUpperCase()}</span>
+              <ChevronDown size={10} className={`transition-transform duration-300 ${isLangOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            <AnimatePresence>
+              {isLangOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full right-0 mt-4 py-2 bg-white rounded-xl shadow-2xl border border-devarc-dark/5 min-w-[100px] overflow-hidden"
                 >
-                  {lang}
-                </button>
-              ))}
-            </div>
+                  {['RU', 'EN', 'UZ'].map((lang) => (
+                    <button
+                      key={lang}
+                      onClick={() => changeLanguage(lang.toLowerCase())}
+                      className={`w-full text-left px-4 py-2 text-[10px] font-bold transition-colors hover:bg-devarc-paper ${
+                        i18n.language.toUpperCase() === lang ? 'text-devarc-accent' : 'text-devarc-dark/60'
+                      }`}
+                    >
+                      {lang}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className={`px-8 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all duration-500 ${
+            className={`px-8 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all duration-500 whitespace-nowrap ${
               isScrolled ? 'bg-devarc-dark text-white shadow-devarc-dark/10' : 'bg-white text-devarc-dark shadow-white/10'
             } hover:bg-devarc-accent hover:text-white shadow-xl`}
           >
@@ -272,7 +307,7 @@ const Navbar = () => {
         </div>
 
         <button 
-          className={`md:hidden transition-colors ${isScrolled ? 'text-devarc-dark' : 'text-white'}`}
+          className={`lg:hidden transition-colors ${isScrolled || isMobileMenuOpen ? 'text-devarc-dark' : 'text-white'}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -285,7 +320,7 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="bg-white border-b border-devarc-dark/5 md:hidden overflow-hidden"
+            className="bg-white border-b border-devarc-dark/5 lg:hidden overflow-hidden"
           >
             <div className="flex flex-col p-8 gap-6">
               {navItems.map((item) => (
